@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebAPI.Services.CharacterServices;
 
 namespace WebAPI
 {
@@ -27,6 +28,7 @@ namespace WebAPI
         {
 
             services.AddControllers();
+            services.AddScoped<ICharacterService, CharacterService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPI", Version = "v1" });
