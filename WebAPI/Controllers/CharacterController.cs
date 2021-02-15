@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebAPI.Models;
+using WebAPI.Services.CharacterServices;
 
 namespace WebAPI.Controllers
 {
@@ -12,35 +13,29 @@ namespace WebAPI.Controllers
     [ApiController]
     public class CharacterController : ControllerBase
     {
-        private static List<Character> characters = new List<Character>()
+        private readonly ICharacterService _characterService;
+
+        public CharacterController(ICharacterService characterService)
         {
-            new Character(),
-            new Character{Id = 1,Name = "Bilbo"}
-        };
+            _characterService = characterService;
+        }
 
         [HttpGet("GetAll")]
         public IActionResult GetCharacter()
         {
-            return Ok(characters);
-        }
-
-        [HttpGet("GetOne")]
-        public IActionResult GetSingleCharacter()
-        {
-            return Ok(characters.FirstOrDefault());
+            return Ok(_characterService.GetAllCharacters());
         }
 
         [HttpGet("{id}")]
         public IActionResult GetCharacterById(int id)
         {
-            return Ok(characters.FirstOrDefault(c => c.Id == id));
+            return Ok(_characterService.GetCharacterById(id));
         }
 
         [HttpPost]
         public IActionResult CreateCharacter(Character character)
         {
-            characters.Add(character);
-            return Ok(characters);
+            return Ok(_characterService.AddCharacter(character));  
         }
     }
 }
